@@ -77,7 +77,16 @@
                     [{name:"Whit-Jimmy", flag: 'us'}, {name:'Josh-jack', flag: 'kp'}], /* first matchup */
                     [{name:"Clay-Wes", flag: 'gr'}, {name:'Jay-Pitner', flag: 'nz'}],  /* second matchup */
                 ],
-                results : []
+                results : [[      /* WINNER BRACKET */
+                  [[0,0], [0,0]], /* first and second matches of the first round */
+                  [[0,0]]         /* second round */
+                ], [              /* LOSER BRACKET */
+                  [[0,0]],        /* first round */
+                  [[0,0]]        /* second round */
+                ], [              /* FINALS */
+                  [[0,0], [0,0]],
+                  [[0,0]]       /* LB winner won first round so need a rematch */
+                ]]
             }
             $(function() {
                 $('.demo').bracket({
