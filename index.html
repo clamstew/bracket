@@ -1,0 +1,107 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./bracket.css">
+    </head>
+
+    <body>
+
+        <h1>Bocce Ball</h1>
+        <div class="demo"></div>
+
+        <hr />
+        <h1>Ladder Ball</h1>
+        <div class="demo2"></div>
+
+        <hr />
+
+        <h1>Pool</h1>
+        <div class="demo3"></div>
+
+        <hr />
+        <h1>Beer Pong</h1>
+        <div class="demo4"></div>
+
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+        <script type="text/javascript" src="./bracket.js"></script>
+
+        <script type="text/javascript">
+            /* Edit function is called when team label is clicked */
+            function edit_fn(container, data, doneCb) {
+            var input = $('<input type="text">')
+            input.val(data ? data.flag + ':' + data.name : '')
+            container.html(input)
+            input.focus()
+            input.blur(function() {
+                var inputValue = input.val()
+                if (inputValue.length === 0) {
+                doneCb(null); // Drop the team and replace with BYE
+                } else {
+                var flagAndName = inputValue.split(':') // Expects correct input
+                doneCb({flag: flagAndName[0], name: flagAndName[1]})
+                }
+            })
+            }
+            
+            /* Render function is called for each team label when data is changed, data
+            * contains the data object given in init and belonging to this slot.
+            *
+            * 'state' is one of the following strings:
+            * - empty-bye: No data or score and there won't team advancing to this place
+            * - empty-tbd: No data or score yet. A team will advance here later
+            * - entry-no-score: Data available, but no score given yet
+            * - entry-default-win: Data available, score will never be given as opponent is BYE
+            * - entry-complete: Data and score available
+            */
+            function render_fn(container, data, score, state) {
+            switch(state) {
+                case "empty-bye":
+                container.append("No team")
+                return;
+                case "empty-tbd":
+                container.append("Upcoming")
+                return;
+            
+                case "entry-no-score":
+                case "entry-default-win":
+                case "entry-complete":
+                container.append('<img src="http://www.aropupu.fi/bracket/site/png/'+data.flag+'.png" /> ').append(data.name)
+                return;
+            }
+            }
+            // "Pitner","Shitaker","Clay","Jay","jack","Wes","Josh","Jimmy"
+            var minimalData = {
+                teams : [
+                    [{name:"Clay", flag: 'us'}, {name:"Jay", flag: 'us'}], /* first matchup */
+                    [{name:"Pitner", flag: 'us'}, {name:"Wes", flag: 'us'}],  /* second matchup */
+                    [{name:'Shitaker', flag: 'us'}, {name:'jack', flag: 'us'}], /* third matchup */
+                    [{name:'Josh', flag: 'us'}, {name:'Jimmy', flag: 'us'}], /* third matchup */
+                ],
+                results : []
+            }
+            $(function() {
+                $('.demo').bracket({
+                init: minimalData, /* data to initialize the bracket with */
+                save: function(){}, /* without save() labels are disabled */
+                decorator: {edit: edit_fn, render: render_fn}});
+
+                $('.demo2').bracket({
+                init: minimalData, /* data to initialize the bracket with */
+                save: function(){}, /* without save() labels are disabled */
+                decorator: {edit: edit_fn, render: render_fn}});
+
+                $('.demo3').bracket({
+                init: minimalData, /* data to initialize the bracket with */
+                save: function(){}, /* without save() labels are disabled */
+                decorator: {edit: edit_fn, render: render_fn}});
+
+                $('.demo4').bracket({
+                init: minimalData, /* data to initialize the bracket with */
+                save: function(){}, /* without save() labels are disabled */
+                decorator: {edit: edit_fn, render: render_fn}});
+            })
+        </script>
+    </body>
+</html>
